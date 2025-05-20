@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "455713830072",
+    "project_id": "social-app-ce973",
+    "storage_bucket": "social-app-ce973.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455713830072:android:4f09f285dc32b8117ff04d",
+        "android_client_info": {
+          "package_name": "com.example.mentos_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCosmb_3wZHdLApAUyv52MQUsap3STNYjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455713830072:android:3c6c2f5d5e3ebf0f7ff04d",
+        "android_client_info": {
+          "package_name": "com.example.social_app_mentos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCosmb_3wZHdLApAUyv52MQUsap3STNYjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
