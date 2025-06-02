@@ -41,13 +41,17 @@ dependencies:
   carousel_slider: ^5.0.0
   flutter_rating_bar: ^4.0.1
   cupertino_icons: ^1.0.8
+  font_awesome_flutter: ^10.8.0
+  icon_broken: ^1.1.0
   fluttertoast: ^8.2.12
+  image_picker: ^1.1.2
   #firebase
   firebase_core: ^3.13.0
   firebase_auth: ^5.5.3
   cloud_firestore: ^5.6.7
+  firebase_storage: ^12.4.6
+  supabase_flutter: ^2.9.0
   flutter_stripe: ^11.5.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -84,12 +88,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

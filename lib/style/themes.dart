@@ -20,7 +20,12 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.deepPurple),
   appBarTheme: AppBarTheme(
-    elevation: 0.0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(20), // حواف دائرية من الأسفل
+      ),
+    ),
+    elevation: 15,
     titleTextStyle: TextStyle(color: Colors.black),
     backgroundColor: Colors.white,
     systemOverlayStyle: SystemUiOverlayStyle(

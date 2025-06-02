@@ -1,17 +1,16 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mentos_app/bloc_observer/bloc_observer.dart';
 import 'package:mentos_app/layout/social_app/cubit/cubit.dart';
-import 'package:mentos_app/layout/social_app/social_app.dart';
-import 'package:mentos_app/modules/social_app/social_login_screen.dart';
-import 'package:mentos_app/modules/social_app/social_register_screen.dart';
+import 'package:mentos_app/layout/social_app/social_layout.dart';
+import 'package:mentos_app/modules/social_login/cubit/cubit.dart';
+import 'package:mentos_app/modules/social_login/social_login_screen.dart';
+import 'package:mentos_app/modules/social_register/cubit/cubit.dart';
 import 'package:mentos_app/shared/local/cach_helper.dart';
 import 'package:mentos_app/style/themes.dart';
-import 'package:mentos_app/test_payment_screen.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'componant/constant.dart';
 
 main() async {
@@ -19,15 +18,18 @@ main() async {
   await Firebase.initializeApp();
   Bloc.observer = MyBlocObserver();
   await CachHelper.init();
-  Stripe.publishableKey = 'your_publishable_key_here';
+  await Supabase.initialize(
+    url: supabaseUrl, // Replace with your Supabase project URL
+    anonKey: supabaseKey, // Replace with your Supabase anon key
+  );
   Widget widget;
-  uid = CachHelper.getData(key: 'uid');
-  if (uid != null) {
+  id = CachHelper.getData(key: 'uid');
+  if (id != null) {
     widget = SocialAppLayout();
   } else {
     widget = SocialLoginScreen();
   }
-  runApp(MyApp(startWidget: widget,));
+  runApp(MyApp(startWidget: widget));
 }
 
 class MyApp extends StatelessWidget {
@@ -37,8 +39,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SocialAppCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (BuildContext context) =>
+                  SocialAppCubit()..getUsersData(), // إنشاء AuthBloc
+        ),
+        BlocProvider(
+          create:
+              (BuildContext context) => SocialAppLoginCubit(), // إنشاء AuthBloc
+        ),
+        BlocProvider(
+          create:
+              (BuildContext context) =>
+                  SocialAppRegisterCubit(), // إنشاء AuthBloc
+        ),
+      ],
       child: MaterialApp(
         theme: lightTheme,
         debugShowCheckedModeBanner: false,

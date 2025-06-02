@@ -15,9 +15,13 @@ Widget defaultFormField({
   String? label,
   String? hintText,
   double radius = 5,
+  int? minLines,
+  int? maxLines,
   IconData? prefixIcon,
   IconData? suffixIcon,
 }) => TextFormField(
+  minLines: minLines=1,
+  maxLines: maxLines=1,
   controller: controller,
   obscureText: isPassword,
   keyboardType: type,
@@ -64,9 +68,7 @@ void navigatePush(context, {required Widget widget}) {
   );
 }
 
-void navigatePushAndRemove(BuildContext? context,{
-  required Widget widget,
-}) {
+void navigatePushAndRemove(BuildContext? context, {required Widget widget}) {
   Navigator.pushAndRemoveUntil(
     context!,
     MaterialPageRoute(builder: (context) => widget),
@@ -106,6 +108,7 @@ Widget buildPage({
 Widget defaultButton({
   Function? onPressed,
   double height = 40,
+  double width = double.infinity,
   double radius = 15,
   double elevate = 0,
   Widget? child,
@@ -119,6 +122,7 @@ Widget defaultButton({
     onPressed: () {
       onPressed!();
     },
+    minWidth: width,
     height: height,
     elevation: elevate,
     textColor: textColor,

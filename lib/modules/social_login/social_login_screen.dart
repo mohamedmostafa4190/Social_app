@@ -1,11 +1,13 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:mentos_app/componant/component.dart';
-import 'package:mentos_app/layout/social_app/cubit/cubit.dart';
-import 'package:mentos_app/layout/social_app/cubit/states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mentos_app/layout/social_app/social_app.dart';
-import 'package:mentos_app/modules/social_app/social_register_screen.dart';
+import 'package:mentos_app/componant/component.dart';
+import 'package:mentos_app/componant/constant.dart';
+import 'package:mentos_app/layout/social_app/cubit/cubit.dart';
+import 'package:mentos_app/layout/social_app/social_layout.dart';
+import 'package:mentos_app/modules/social_login/cubit/cubit.dart';
+import 'package:mentos_app/modules/social_login/cubit/states.dart';
+import 'package:mentos_app/modules/social_register/social_register_screen.dart';
 import 'package:mentos_app/shared/local/cach_helper.dart';
 
 class SocialLoginScreen extends StatelessWidget {
@@ -15,18 +17,23 @@ class SocialLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SocialAppCubit, SocialAppStates>(
+    return BlocConsumer<SocialAppLoginCubit, SocialAppLoginStates>(
       listener: (context, state) {
         if (state is SocialAppLoginErrorStates) {
           showToast(text: state.error, states: ToastStates.ERROR);
         } else if (state is SocialAppLoginSuccessStates) {
-          CachHelper.saveData(key: 'uid', value: state.uid).then((value) {
+          CachHelper.saveData(key: 'uid', value: state.id).then((value) {
+            id = state.id;
+            BlocProvider.of<SocialAppCubit>(
+              context,
+              listen: false,
+            ).getUsersData();
             navigatePushAndRemove(context, widget: SocialAppLayout());
           });
         }
       },
       builder: (context, state) {
-        final cubit = SocialAppCubit.get(context);
+        final cubit = SocialAppLoginCubit.get(context);
         return Scaffold(
           body: Container(
             width: double.infinity,

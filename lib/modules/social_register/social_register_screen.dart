@@ -2,10 +2,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mentos_app/componant/component.dart';
-import 'package:mentos_app/layout/social_app/cubit/cubit.dart';
-import 'package:mentos_app/layout/social_app/cubit/states.dart';
-import 'package:mentos_app/layout/social_app/social_app.dart';
-import 'package:mentos_app/shared/local/cach_helper.dart';
+import 'package:mentos_app/modules/social_register/cubit/cubit.dart';
+import 'package:mentos_app/modules/social_register/cubit/states.dart';
+
+import '../../layout/social_app/social_layout.dart';
+import '../../shared/local/cach_helper.dart';
 
 class SocialRegisterScreen extends StatelessWidget {
   final _emailController = TextEditingController();
@@ -20,8 +21,13 @@ class SocialRegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SocialAppCubit, SocialAppStates>(
+    return BlocConsumer<SocialAppRegisterCubit, SocialAppRegisterStates>(
       listener: (context, state) {
+        if(state is SocialAppRegisterSuccessStates){
+          showToast(text: 'تم التسجيل بنجاح برجاء تأكيد الحساب من البريد الالكتروني', states: ToastStates.SUCCESS);
+        }else if(state is SocialAppRegisterErrorStates){
+          showToast(text: state.error, states: ToastStates.ERROR);
+        }
         if (state is SocialCreateUserSuccessStates) {
           CachHelper.saveData(key: 'uid', value: state.uid).then((value) {
             navigatePushAndRemove(widget: SocialAppLayout(), context);
@@ -29,7 +35,7 @@ class SocialRegisterScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final cubit = SocialAppCubit.get(context);
+        final cubit = SocialAppRegisterCubit.get(context);
         return SafeArea(
           child: Scaffold(
             body: Container(
@@ -105,7 +111,7 @@ class SocialRegisterScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
-                              type: TextInputType.emailAddress,
+                              type: TextInputType.name,
                               prefixIcon: Icons.email_outlined,
                             ),
                             SizedBox(height: 15),

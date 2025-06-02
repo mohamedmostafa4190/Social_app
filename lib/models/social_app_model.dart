@@ -1,16 +1,33 @@
-class UserCreateModel {
+class SocialUserModel {
   String? name;
   String? email;
   String? phone;
-  String? uId;
+  String? id;
+  String? image;
+  String? profileCover;
+  String? bio;
+  // bool? isEmailVerified;
 
-  UserCreateModel({this.email, this.phone, this.name, this.uId});
+  SocialUserModel({
+    this.email,
+    this.phone,
+    this.name,
+    this.id,
+    this.image,
+    this.profileCover,
+    this.bio,
+    // this.isEmailVerified,
+  });
 
-  UserCreateModel.fromJson(Map<String, dynamic> json) {
+  SocialUserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
-    uId = json['uId'];
+    id = json['id'];
+    image = json['image'];
+    bio = json['bio'];
+    profileCover = json['profileCover'];
+    // isEmailVerified = json['isEmailVerified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -18,7 +35,11 @@ class UserCreateModel {
     data['name'] = name;
     data['email'] = email;
     data['phone'] = phone;
-    data['uId'] = uId;
+    data['id'] = id;
+    data['image'] = image;
+    data['profileCover'] = profileCover;
+    data['bio'] = bio;
+    // data['isEmailVerified'] = isEmailVerified;
     return data;
   }
 }

@@ -1,16 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mentos_app/componant/constant.dart';
 import 'package:mentos_app/layout/social_app/cubit/states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mentos_app/layout/social_app/social_app.dart';
 import 'package:mentos_app/models/social_app_model.dart';
 import 'package:mentos_app/modules/social_app/chat_screen.dart';
 import 'package:mentos_app/modules/social_app/home_screen.dart';
 import 'package:mentos_app/modules/social_app/posts_screen.dart';
 import 'package:mentos_app/modules/social_app/setting_screen.dart';
 import 'package:mentos_app/modules/social_app/users_screen.dart';
+import 'package:mentos_app/shared/local/cach_helper.dart';
 
 class SocialAppCubit extends Cubit<SocialAppStates> {
   SocialAppCubit() : super(SocialAppInitialStates());
@@ -20,7 +20,12 @@ class SocialAppCubit extends Cubit<SocialAppStates> {
   bool isPassword = true;
   IconData suffix = Icons.visibility;
   int currentIndex = 0;
-  bool? isUid = true;
+  SocialUserModel? userModel;
+  File? profileImage;
+  File? coverImage;
+  final picker = ImagePicker();
+  String? imageUrl = '';
+  String? coverUrl = '';
 
   final List<Widget> screens = [
     HomeScreen(),
@@ -29,10 +34,15 @@ class SocialAppCubit extends Cubit<SocialAppStates> {
     UsersScreen(),
     SettingScreen(),
   ];
+  final List<String> titles = ['Home', 'Chat', 'Posts', 'Users', 'Setting'];
 
   void changeBottom(int index) {
-    currentIndex = index;
-    emit(AppChangeBottomNavBarStates());
+    if (index == 2) {
+      emit(AddPostStates());
+    } else {
+      currentIndex = index;
+      emit(AppChangeBottomNavBarStates());
+    }
   }
 
   void changePasswordVisibility() {
@@ -41,91 +51,174 @@ class SocialAppCubit extends Cubit<SocialAppStates> {
     emit(ChangePasswordVisibilityStates());
   }
 
-  void userRegister({
-    required String name,
-    required String phone,
-    required String email,
-    required String password,
-  }) async {
-    emit(SocialAppRegisterLoadingStates());
-    return await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-          email: email.trim(),
-          password: password.trim(),
-        )
+  void getUsersData() async {
+    emit(SocialGetUserDataLoadingStates());
+    await supabase
+        .from('users')
+        .select()
+        .eq('id', id)
+        .single()
         .then((value) {
-          print(value.user!.email);
-          print(value.user!.uid);
-          userCreate(
-            uid: value.user!.uid,
-            email: email,
-            phone: phone,
-            name: name,
-          );
+          userModel = SocialUserModel.fromJson(value);
+          print(value.toString());
+          print('✅ بيانات المستخدم:');
+          emit(SocialGetUserDataSuccessStates());
         })
         .catchError((error) {
-          emit(SocialAppRegisterErrorStates(error.toString()));
+          print('❌ Error getting user data: $error');
+          emit(SocialGetUserDataErrorStates(error.toString()));
         });
   }
 
-  void userLogin({required String email, required String password}) async {
-    emit(SocialAppLoginLoadingStates());
-    FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-          email: email.trim(),
-          password: password.trim(),
-        )
-        .then((value) {
-          print(value.user!.email);
-          print(value.user!.uid);
-          emit(SocialAppLoginSuccessStates(value.user!.uid));
-        })
-        .catchError((error) {
-          emit(SocialAppLoginErrorStates(error.toString()));
-        });
-  }
-  void userCreate({
-    required String name,
-    required String phone,
-    required String email,
-    required String uid,
-  }) {
-    UserCreateModel model = UserCreateModel(
-      name: name,
-      email: email,
-      phone: phone,
-      uId: uid,
-    );
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .set(model.toJson())
-        .then((value) {
-          emit(SocialCreateUserSuccessStates(uid));
-        })
-        .catchError((error) {
-          emit(SocialCreateUserErrorStates(error.toString()));
-        });
-  }
-
-  // _______________________________________________________________________________
-  Future<void> makePayment({required String paymentIntentClientSecret}) async {
-    emit(PaymentLoading());
-
-    await Stripe.instance
-        .initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-            paymentIntentClientSecret: paymentIntentClientSecret,
-            merchantDisplayName: 'Your App Name',
-          ),
-        )
+  void logOut() async {
+    emit(LogOutLoadingStates());
+    await supabase.auth
+        .signOut()
         .then((value) async {
-          await Stripe.instance.presentPaymentSheet();
-
-          emit(PaymentSuccess());
+          print('تم تسجيل الخروج بنجاح');
+          emit(LogOutSuccessStates());
+          await CachHelper.removeData('uid');
         })
         .catchError((error) {
-          emit(PaymentError(error: error.toString()));
+          emit(LogOutErrorStates(error.toString()));
+        });
+  }
+
+  void updateUser({
+    required String? name,
+    required String? bio,
+    String? userId,
+    String? cover,
+    String? image,
+  }) async {
+    SocialUserModel model = SocialUserModel(
+      id: id,
+      name: name,
+      bio: bio,
+      image: image ?? userModel!.image,
+      profileCover: cover ?? userModel!.profileCover,
+      phone: userModel!.phone,
+      email: userModel!.email,
+    );
+    await supabase
+        .from('users')
+        .update(model.toJson())
+        .eq('id', id)
+        .then((value) {
+          getUsersData();
+          emit(UpdateUserDataSuccessStates());
+          print('✅ تم تحديث البيانات بنجاح');
+        })
+        .catchError((error) {
+          print('❌ خطأ في تحديث البيانات: $error');
+          emit(UpdateUserDataErrorStates(error.toString()));
+        });
+  }
+  Future<void> pickProfileImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      emit(SocialProfileImagePickedSuccessState());
+    } else {
+      print('No Image Selected');
+      emit(SocialProfileImagePickedErrorState('No Image Selected'));
+    }
+  }
+
+  Future<void> pickCoverImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      coverImage = File(pickedFile.path);
+      emit(SocialCoverImagePickedSuccessState());
+    } else {
+      print('No Image Selected');
+      emit(SocialCoverImagePickedErrorState('No Image Selected'));
+    }
+  }
+
+  Future<void> uploadProfileImage({
+    required String? name,
+    required String? bio,
+  }) async {
+    emit(UploadImageProfileLoadingState());
+    if (profileImage == null) {
+      emit(UploadImageProfileErrorState('❌ No profile image selected.'));
+    }
+    final fileName = Uri.file(profileImage!.path).pathSegments.last;
+    imageUrl = supabase.storage.from('users').getPublicUrl(fileName);
+    await supabase.storage
+        .from('users')
+        .upload(fileName, profileImage!)
+        .then((value) {
+          print(value);
+          print('✅ File uploaded successfully: $imageUrl');
+          emit(UploadImageProfileSuccessState());
+          updateUser(name: name, bio: bio, image: imageUrl);
+        })
+        .catchError((error) {
+          print('❌ Error uploading file: $error');
+          emit(UploadImageProfileErrorState(error.toString()));
+        });
+  }
+
+  Future<void> uploadCoverImage({
+    required String? name,
+    required String? bio,
+  }) async {
+    if (coverImage == null) {
+      emit(UploadCoverImageErrorState('❌ No cover image selected.'));
+    }
+    final fileName = Uri.file(coverImage!.path).pathSegments.last;
+    coverUrl = supabase.storage.from('users').getPublicUrl(fileName);
+    await supabase.storage
+        .from('users')
+        .upload(fileName, coverImage!)
+        .then((value) {
+          print(value);
+          print('✅ File uploaded successfully: $coverUrl');
+          emit(UploadCoverImageSuccessState());
+          updateUser(name: name, bio: bio, cover: coverUrl);
+        })
+        .catchError((error) {
+          print('❌ Error uploading file: $error');
+          emit(UploadCoverImageErrorState(error.toString()));
         });
   }
 }
+// void uploadFileToStorage() async {
+//   firebase_storage.FirebaseStorage.instance
+//       .ref()
+//       .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+//       .putFile(profileImage!)
+//       .then((value) {
+//         print(value.toString());
+//         value.ref.getDownloadURL().then((value) {
+//           print(value.toString());
+//         });
+//       })
+//       .catchError((error) {
+//         print(error.toString('Error!!!!!'));
+//       });
+// }
+
+// Test_______________________________________________________________________________
+//   Future<void> makePayment({required String paymentIntentClientSecret}) async {
+//     emit(PaymentLoading());
+//
+//     await Stripe.instance
+//         .initPaymentSheet(
+//           paymentSheetParameters: SetupPaymentSheetParameters(
+//             paymentIntentClientSecret: paymentIntentClientSecret,
+//             merchantDisplayName: 'Your App Name',
+//           ),
+//         )
+//         .then((value) async {
+//           await Stripe.instance.presentPaymentSheet();
+//
+//           emit(PaymentSuccess());
+//         })
+//         .catchError((error) {
+//           emit(PaymentError(error: error.toString()));
+//         });
+//   }
+// }
