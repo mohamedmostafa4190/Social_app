@@ -8,7 +8,7 @@ import 'package:mentos_app/models/social_app_model.dart';
 import 'package:mentos_app/modules/social_app/chat_screen.dart';
 import 'package:mentos_app/modules/social_app/home_screen.dart';
 import 'package:mentos_app/modules/social_app/posts_screen.dart';
-import 'package:mentos_app/modules/social_app/setting_screen.dart';
+import 'package:mentos_app/modules/setting/setting_screen.dart';
 import 'package:mentos_app/modules/social_app/users_screen.dart';
 import 'package:mentos_app/shared/local/cach_helper.dart';
 
