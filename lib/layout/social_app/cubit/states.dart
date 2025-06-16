@@ -27,6 +27,40 @@ class SocialGetUserDataErrorStates extends SocialAppStates {
 
   SocialGetUserDataErrorStates(this.error);
 }
+//___________________ Get All User Data For Chat_________________________________
+class SocialGetAllUserDataLoadingStates extends SocialAppStates {}
+
+class SocialGetAllUserDataSuccessStates extends SocialAppStates {}
+
+class SocialGetAllUserDataErrorStates extends SocialAppStates {
+  final String error;
+
+  SocialGetAllUserDataErrorStates(this.error);
+}
+//___________________ Get Messages For Chat_________________________________
+
+class SocialGetMessagesSuccessStates extends SocialAppStates {}
+//___________________ Send Messages For Chat_________________________________
+class SocialSendMessagesLoadingStates extends SocialAppStates {}
+
+class SocialSendMessagesSuccessStates extends SocialAppStates {}
+
+class SocialSendMessagesErrorStates extends SocialAppStates {
+  final String error;
+
+  SocialSendMessagesErrorStates(this.error);
+}
+//___________________ Get Posts Data_________________________________
+class SocialGetPostsDataLoadingStates extends SocialAppStates {}
+
+class SocialGetPostsDataSuccessStates extends SocialAppStates {}
+
+class SocialGetPostsDataErrorStates extends SocialAppStates {
+  final String error;
+
+  SocialGetPostsDataErrorStates(this.error);
+}
+//___________________ password visibility__________________________________
 
 class ChangePasswordVisibilityStates extends SocialAppStates {}
 
@@ -64,7 +98,8 @@ class SocialProfileImagePickedErrorState extends SocialAppStates {
   final String error;
 
   SocialProfileImagePickedErrorState(this.error);
-}//____________________________CoverImage____________________________________________
+} //____________________________CoverImage____________________________________________
+
 class SocialCoverImagePickedSuccessState extends SocialAppStates {}
 
 class SocialCoverImagePickedErrorState extends SocialAppStates {
@@ -72,29 +107,57 @@ class SocialCoverImagePickedErrorState extends SocialAppStates {
 
   SocialCoverImagePickedErrorState(this.error);
 }
-//_________________________________________________________________________________________
-// class SignInSuccessState extends SocialAppStates {}
 
+//_____________________________Upload Image Profile___________________________________________
 class UploadImageProfileLoadingState extends SocialAppStates {}
+
 class UploadImageProfileSuccessState extends SocialAppStates {}
+
 class UploadImageProfileErrorState extends SocialAppStates {
   final String error;
 
   UploadImageProfileErrorState(this.error);
 }
+
+//_____________________________Upload Cover Profile___________________________________________
 class UploadCoverImageSuccessState extends SocialAppStates {}
+
 class UploadCoverImageErrorState extends SocialAppStates {
   final String error;
 
   UploadCoverImageErrorState(this.error);
 }
-//________________________________________________________________________
-// class PaymentLoading extends SocialAppStates {}
-//
-// class PaymentSuccess extends SocialAppStates {}
-//
-// class PaymentError extends SocialAppStates {
-//   final String? error;
-//
-//   PaymentError({this.error});
-// }
+//____________________________Upload image post_______________________________
+
+class UploadPostImageLoadingState extends SocialAppStates {}
+
+class UploadPostImageSuccessState extends SocialAppStates {}
+
+class UploadPostImageErrorState extends SocialAppStates {
+  final String error;
+
+  UploadPostImageErrorState(this.error);
+}
+class CreatePostLoadingState extends SocialAppStates {}
+
+class CreatePostSuccessState extends SocialAppStates {}
+
+class CreatePostErrorState extends SocialAppStates {
+  final String error;
+
+  CreatePostErrorState(this.error);
+}
+
+class LikePostSuccessState extends SocialAppStates {}
+class CountLikePostSuccessState extends SocialAppStates {}
+
+class LikePostErrorState extends SocialAppStates {
+  final String error;
+
+  LikePostErrorState(this.error);
+}
+class SocialPostImagePickedSuccessState extends SocialAppStates {}
+
+class SocialPostImagePickedErrorState extends SocialAppStates {}
+
+class RemovePostImageSuccessState extends SocialAppStates {}

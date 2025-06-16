@@ -15,13 +15,13 @@ Widget defaultFormField({
   String? label,
   String? hintText,
   double radius = 5,
-  int? minLines,
-  int? maxLines,
+  int? minLines=1,
+  int? maxLines=1,
   IconData? prefixIcon,
   IconData? suffixIcon,
 }) => TextFormField(
-  minLines: minLines=1,
-  maxLines: maxLines=1,
+  minLines: minLines,
+  maxLines: maxLines,
   controller: controller,
   obscureText: isPassword,
   keyboardType: type,
@@ -158,5 +158,5 @@ void showToast({required String text, required ToastStates states}) {
 
 String formatDate(String date) {
   DateTime parsed = DateTime.parse(date);
-  return DateFormat('dd/MM/yyyy <••> hh:mm a').format(parsed);
+  return DateFormat('yyyy/MM/dd •• hh:mm a').format(parsed);
 }

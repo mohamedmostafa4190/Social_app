@@ -32,203 +32,217 @@ class SettingScreen extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
         return ConditionalBuilder(
-          condition: state is !SocialGetUserDataLoadingStates,
-          builder: (context) => Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional.topCenter,
-                        child: Container(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          width: double.infinity,
-                          height: 170,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage('${userModel.profileCover}'),
-                            ),
-                          ),
-                        ),
-                      ),
-                      CircleAvatar(
-                        radius: 50,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage('${userModel.image}'),
-                          radius: 45,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  '${userModel.name}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                ),
-                Text(
-                  '${userModel.bio}',
-                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14.0),
-                ),
-                SizedBox(height: 15),
-                Row(
+          condition: state is! SocialGetUserDataLoadingStates,
+          builder:
+              (context) => Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: Column(
+                    SizedBox(
+                      height: 200,
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomCenter,
                         children: [
-                          Text(
-                            '100',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                          Align(
+                            alignment: AlignmentDirectional.topCenter,
+                            child: Container(
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              width: double.infinity,
+                              height: 170,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    '${userModel.profileCover}',
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                          Text(
-                            'Post',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14.0,
+                          CircleAvatar(
+                            radius: 50,
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                '${userModel.image}',
+                              ),
+                              radius: 45,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            '100',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          Text(
-                            'Post',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                        ],
+                    SizedBox(height: 10),
+                    Text(
+                      '${userModel.name}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            '100',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          Text(
-                            'Post',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      '${userModel.bio}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14.0,
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            '100',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
+                    SizedBox(height: 15),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text(
+                                '100',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              Text(
+                                'Post',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            'Post',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14.0,
-                            ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text(
+                                '100',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              Text(
+                                'Post',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text(
+                                '100',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              Text(
+                                'Post',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text(
+                                '100',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              Text(
+                                'Post',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 35),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  10,
+                                ), // نصف قطر الزاوية
+                              ),
+                            ),
+                            child: Text('Edit profile'),
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              navigatePush(
+                                context,
+                                widget: EditProfileScreen(),
+                              );
+                            },
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Icon(IconBroken.Edit),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 100),
+                    Container(
+                      width: double.infinity,
+                      child: ConditionalBuilder(
+                        condition: state is! LogOutLoadingStates,
+                        builder:
+                            (context) => OutlinedButton(
+                              onPressed: () {
+                                cubit.logOut();
+                                CachHelper.removeData('uid');
+                              },
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ), // نصف قطر الزاوية
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(IconBroken.Logout),
+                                  SizedBox(width: 15),
+                                  Text('LOG OUT'),
+                                ],
+                              ),
+                            ),
+                        fallback: (context) => LinearProgressIndicator(),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 35),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ), // نصف قطر الزاوية
-                          ),
-                        ),
-                        child: Text('Edit profile'),
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          navigatePush(context, widget: EditProfileScreen());
-                        },
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Icon(IconBroken.Edit),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 100),
-                Container(
-                  width: double.infinity,
-                  child: ConditionalBuilder(
-                    condition: state is! LogOutLoadingStates,
-                    builder:
-                        (context) => OutlinedButton(
-                      onPressed: () {
-                        cubit.logOut();
-                        CachHelper.removeData('uid');
-                      },
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ), // نصف قطر الزاوية
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(IconBroken.Logout),
-                          SizedBox(width: 15),
-                          Text('LOG OUT'),
-                        ],
-                      ),
-                    ),
-                    fallback: (context) => LinearProgressIndicator(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          fallback:(context) =>  Center(child: CircularProgressIndicator()),
+              ),
+          fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
     );

@@ -20,13 +20,13 @@ main() async {
   await CachHelper.init();
   await Supabase.initialize(
     url: supabaseUrl, // Replace with your Supabase project URL
-    anonKey: supabaseKey, // Replace with your Supabase anon key
+    anonKey: supabaseKey,// Replace with your Supabase anon key
   );
-  Widget widget;
+  Widget? widget;
   id = CachHelper.getData(key: 'uid');
   if (id != null) {
     widget = SocialAppLayout();
-  } else {
+  } else if (id == null) {
     widget = SocialLoginScreen();
   }
   runApp(MyApp(startWidget: widget));
@@ -42,18 +42,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create:
-              (BuildContext context) =>
-                  SocialAppCubit()..getUsersData(), // إنشاء AuthBloc
+          create: (BuildContext context) => SocialAppCubit()..getUsersData()..getPostsData()..startListeningToMessages(),
         ),
+        BlocProvider(create: (BuildContext context) => SocialAppLoginCubit()),
         BlocProvider(
-          create:
-              (BuildContext context) => SocialAppLoginCubit(), // إنشاء AuthBloc
-        ),
-        BlocProvider(
-          create:
-              (BuildContext context) =>
-                  SocialAppRegisterCubit(), // إنشاء AuthBloc
+          create: (BuildContext context) => SocialAppRegisterCubit(),
         ),
       ],
       child: MaterialApp(

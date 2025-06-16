@@ -25,6 +25,11 @@ class EditProfileScreen extends StatelessWidget {
             states: ToastStates.ERROR,
           );
         }
+        if (state is UploadImageProfileSuccessState) {
+          SocialAppCubit.get(context).profileImage = null;
+        }else if(state is UploadCoverImageSuccessState){
+          SocialAppCubit.get(context).coverImage = null;
+        }
       },
       builder: (context, state) {
         var userModel = SocialAppCubit.get(context).userModel;
